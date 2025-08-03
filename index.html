@@ -23,7 +23,6 @@
       z-index: 3000;
       backdrop-filter: blur(4px);
       overflow: hidden;
-      transition: opacity 1s ease; /* For fade out */
     }
 
     #enter-btn-wrapper {
@@ -93,16 +92,36 @@
       transform: scale(0.95);
     }
 
-    /* GitHub button styles + initial hidden + transition */
+    /* Mute button styles */
+    #mute-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: var(--accent);
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      box-shadow: 0 20px 50px -10px rgba(124,92,255,.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 4000;
+      color: white;
+      font-size: 22px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #mute-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 25px 70px -10px rgba(124,92,255,.7);
+    }
+
+    /* GitHub button initial hidden state */
     .links .btn {
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .links .btn.visible {
-      opacity: 1;
-      transform: translateY(0);
     }
 
     /* Your existing styles ... */
@@ -121,6 +140,9 @@
       </button>
     </div>
   </div>
+
+  <!-- Mute Button -->
+  <button id="mute-btn" title="Mute/Unmute Audio" aria-label="Mute or unmute audio">🔊</button>
 
   <!-- toast fallback -->
   <div id="toast" class="toast">Copied <strong>__vcr__</strong> to clipboard</div>
@@ -304,76 +326,61 @@
         gsap.to(card, { rotationY: x * 10, rotationX: -y * 8, scale: 1.02, transformPerspective: 600, ease: "power1.out", duration: 0.4 });
       });
       card.addEventListener('mouseleave', () => {
-        gsap.to(card, { rotationY: 0, rotationX: 0, scale: 1, ease: "power3.out", duration: 0.5 });
+        gsap.to(card, { rotationY: 0, rotationX: 0, scale: 1, ease: "power1.out", duration: 0.4 });
       });
     });
 
-    // fallback: if Discord user link fails, copy tag
-    const cta = document.getElementById('cta-link');
-    const toast = document.getElementById('toast');
-    cta.addEventListener('click', function (e) {
-      setTimeout(() => {
-        navigator.clipboard.writeText("__vcr__").then(() => {
-          toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 1800);
-        }).catch(() => {
-          // silent fail
-        });
-      }, 500);
-    });
+    // ENTRY BUTTON & AUDIO CONTROLS
 
-    // Click to Enter button logic with audio
-
+    const entryOverlay = document.getElementById('entry-overlay');
     const enterBtn = document.getElementById('enter-btn');
-    const overlay = document.getElementById('entry-overlay');
-    const intro = document.getElementById('intro-music');
-    const ambient = document.getElementById('ambient-music');
+    const muteBtn = document.getElementById('mute-btn');
+    const introMusic = document.getElementById('intro-music');
+    const ambientMusic = document.getElementById('ambient-music');
 
-    // Disable scroll behind overlay until entered
-    document.body.style.overflow = 'hidden';
+    let isMuted = false;
 
-    enterBtn.addEventListener('mousemove', e => {
-      const rect = enterBtn.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20; // rotate range
-      const y = ((e.clientY - rect.top) / rect.height - 0.5) * -15;
-      gsap.to(enterBtn, { rotationY: x, rotationX: y, scale: 1.03, ease: "power2.out", duration: 0.3 });
-    });
+    // Initially mute audio elements to avoid browser autoplay issues
+    introMusic.muted = true;
+    ambientMusic.muted = true;
 
-    enterBtn.addEventListener('mouseleave', () => {
-      gsap.to(enterBtn, { rotationY: 0, rotationX: 0, scale: 1, ease: "power3.out", duration: 0.5 });
-    });
-
+    // Play intro on button click, then ambient loops after intro ends
     enterBtn.addEventListener('click', () => {
-      // button press feedback
-      gsap.to(enterBtn, { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1, ease: "power1.inOut" });
+      // Remove entry overlay with fade-out animation
+      gsap.to(entryOverlay, { opacity: 0, duration: 0.8, ease: "power1.in", onComplete: () => {
+        entryOverlay.style.display = "none";
+      }});
 
-      // fade out overlay
-      gsap.to(overlay, {
-        opacity: 0,
-        duration: 1,
-        ease: "power2.inOut",
-        onComplete: () => {
-          overlay.style.display = 'none';
-        }
-      });
+      // Unmute and play intro
+      introMusic.muted = isMuted;
+      ambientMusic.muted = isMuted;
+      introMusic.currentTime = 0;
+      introMusic.play();
 
-      // Play intro music
-      intro.volume = 0.45;  // swapped to your intended volume
-      intro.play().catch(() => {
-        // auto-play blocked, wait for user interaction, fallback handled here if needed
-      });
-
-      // When intro ends, play ambient loop
-      intro.onended = () => {
-        ambient.volume = 0.75;  // swapped to your intended volume
-        ambient.play();
+      // When intro ends, play ambient in loop
+      introMusic.onended = () => {
+        ambientMusic.currentTime = 0;
+        ambientMusic.play();
       };
+    });
 
-      // Allow scrolling after entry
-      document.body.style.overflow = '';
+    // Mute button toggle
+    muteBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+      introMusic.muted = isMuted;
+      ambientMusic.muted = isMuted;
+      muteBtn.textContent = isMuted ? '🔇' : '🔊';
+    });
+
+    // Animate GitHub button reveal after hero intro animations
+    gsap.to(".links .btn", {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      delay: 2.5,
+      ease: "power3.out"
     });
 
   </script>
-
 </body>
 </html>
