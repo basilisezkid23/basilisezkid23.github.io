@@ -23,6 +23,7 @@
       z-index: 3000;
       backdrop-filter: blur(4px);
       overflow: hidden;
+      transition: opacity 1s ease; /* For fade out */
     }
 
     #enter-btn-wrapper {
@@ -91,6 +92,21 @@
     #enter-btn:active {
       transform: scale(0.95);
     }
+
+    /* GitHub button styles + initial hidden + transition */
+    .links .btn {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .links .btn.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Your existing styles ... */
+
   </style>
 </head>
 <body>
@@ -128,9 +144,7 @@
         A one-of-a-kind developer. Whatever you can imagine, I'll have it done in less than a day. I build with love and skill, your projects are safe with me. (rhymes with grug)
       </p>
       <div class="links">
-        <a href="https://github.com/basilisezkid23" target="_blank" class="btn" style="opacity: 0; transform: translateY(10px);">
-          GitHub
-        </a>
+        <a href="https://github.com/basilisezkid23" target="_blank" class="btn">GitHub</a>
       </div>
     </div>
   </section>
@@ -333,33 +347,33 @@
       // button press feedback
       gsap.to(enterBtn, { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1, ease: "power1.inOut" });
 
-      // play intro music (will require user gesture to allow)
-      intro.play().catch(() => { /* Ignore autoplay restrictions */ });
+      // fade out overlay
+      gsap.to(overlay, {
+        opacity: 0,
+        duration: 1,
+        ease: "power2.inOut",
+        onComplete: () => {
+          overlay.style.display = 'none';
+        }
+      });
 
-      // hide overlay and enable scroll
-      gsap.to(overlay, { opacity: 0, duration: 0.7, ease: "power2.inOut", onComplete: () => {
-        overlay.style.display = 'none';
-        document.body.style.overflow = 'auto';
+      // Play intro music
+      intro.volume = 0.45;  // swapped to your intended volume
+      intro.play().catch(() => {
+        // auto-play blocked, wait for user interaction, fallback handled here if needed
+      });
 
-        // start ambient music
-        ambient.play().catch(() => { /* Ignore autoplay restrictions */ });
-      }});
+      // When intro ends, play ambient loop
+      intro.onended = () => {
+        ambient.volume = 0.75;  // swapped to your intended volume
+        ambient.play();
+      };
+
+      // Allow scrolling after entry
+      document.body.style.overflow = '';
     });
 
-    // Animate GitHub button reveal inside script (no CSS needed)
-    window.addEventListener('load', () => {
-      const githubBtn = document.querySelector('.links .btn');
-      if (!githubBtn) return;
-
-      // Start hidden & down (already set inline style)
-      // Add smooth transition
-      githubBtn.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-
-      setTimeout(() => {
-        githubBtn.style.opacity = '1';
-        githubBtn.style.transform = 'translateY(0)';
-      }, 400);
-    });
   </script>
+
 </body>
 </html>
