@@ -24,7 +24,15 @@
       backdrop-filter: blur(4px);
       overflow: hidden;
     }
-
+    // Animate GitHub button reveal with opacity and slide up
+gsap.to(".links .btn", {
+  opacity: 1,
+  y: 0,
+  duration: 0.8,
+  delay: 0.8,
+  stagger: 0.15,
+  ease: "back.out(1.7)"
+});
     #enter-btn-wrapper {
       perspective: 800px;
     }
