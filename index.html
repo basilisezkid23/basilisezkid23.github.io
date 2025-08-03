@@ -16,7 +16,7 @@
     #entry-overlay {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(30,24,80,0.85) 0%, rgba(15,11,40,1) 80%);
+      background: radial-gradient(circle at 50% 50%, rgba(31,24,80,0.85) 0%, rgba(15,11,30,1) 80%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -92,11 +92,50 @@
       transform: scale(0.95);
     }
 
-    /* Your existing styles ... */
+    /* MUTE BUTTON */
+    #mute-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(124, 92, 255, 0.8);
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(124, 92, 255, 0.7);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      z-index: 4000;
+    }
 
+    #mute-btn:hover {
+      background: rgba(124, 92, 255, 1);
+      transform: scale(1.1);
+    }
+
+    #mute-icon {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      fill: white;
+    }
+
+    #mute-btn.muted #mute-icon {
+      opacity: 0.5;
+      transform: rotate(-20deg);
+    }
   </style>
 </head>
 <body>
+
+  <!-- MUTE BUTTON -->
+  <button id="mute-btn" aria-label="Mute audio" title="Mute/Unmute">
+    <svg id="mute-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="pointer-events:none;">
+      <path d="M3 9v6h4l5 5V4L7 9H3z"/>
+      <line x1="19" y1="5" x2="5" y2="19" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
 
   <!-- ENTRY OVERLAY -->
   <div id="entry-overlay">
@@ -345,19 +384,48 @@
       });
 
       // Play intro music
-      intro.volume = 0.35;
+      intro.volume = 0.45;
       intro.play().catch(() => {
         // auto-play blocked, wait for user interaction, fallback handled here if needed
       });
 
       // When intro ends, play ambient loop
       intro.onended = () => {
-        ambient.volume = 0.15;
+        ambient.volume = 0.75;
         ambient.play();
       };
 
       // Allow scrolling after entry
       document.body.style.overflow = '';
+    });
+
+    // Mute button logic
+
+    const muteBtn = document.getElementById('mute-btn');
+    let isMuted = false;
+
+    muteBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+
+      // Toggle muted class for style
+      muteBtn.classList.toggle('muted', isMuted);
+
+      // Mute/unmute audio elements
+      intro.muted = isMuted;
+      ambient.muted = isMuted;
+
+      // Optional: pause playing audio if muted
+      if (isMuted) {
+        intro.pause();
+        ambient.pause();
+      } else {
+        // If the intro ended, play ambient; else resume intro
+        if (intro.ended) {
+          ambient.play();
+        } else {
+          intro.play();
+        }
+      }
     });
   </script>
 
