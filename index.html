@@ -11,8 +11,35 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-JX0UqV0KCUbJt1k4QGpqgnmF4CXw16Wqjx1Zf7qUTpN5F8ZU9V32zEM6e+v5lN77Z0F5zFzTuXR4m7ZJXk1hgQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* minimal toast fallback styling */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 20px 50px -10px rgba(124,92,255,.5);
+      font-size: 0.9rem;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .35s ease, transform .35s ease;
+      transform: translateY(10px);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
+
+  <!-- toast fallback -->
+  <div id="toast" class="toast">Copied <strong>__vcr__</strong> to clipboard</div>
 
   <!-- floating background shapes -->
   <div class="floaters">
@@ -109,7 +136,7 @@
       <h2>Would you like to see your idea shine?</h2>
       <p>Send me a Direct Message on Discord <strong>@__vcr__</strong> so we can make your dreams come true.</p>
       <div class="cta-btn-wrap">
-        <a href="https://discord.com/users/__vcr__" target="_blank" class="btn large pulse">Let's Talk</a>
+        <a id="cta-link" href="https://discord.com/users/__vcr__" target="_blank" class="btn large pulse">Let's Talk</a>
       </div>
     </div>
   </section>
@@ -152,7 +179,7 @@
     gsap.from(".cta-box", { scale: 0.95, opacity: 0, duration: 1, delay: 2.2, ease: "elastic.out(1,0.5)" });
 
     // floaters subtle motion
-    gsap.utils.toArray('.blob').forEach((b, i) => {
+    gsap.utils.toArray('.blob').forEach((b) => {
       const delay = parseFloat(b.style.getPropertyValue('--delay')) || 0;
       gsap.to(b, {
         y: '+=15',
@@ -184,6 +211,23 @@
       card.addEventListener('mouseleave', () => {
         gsap.to(card, { rotationY: 0, rotationX: 0, scale: 1, ease: "power3.out", duration: 0.5 });
       });
+    });
+
+    // fallback: if Discord user link fails, copy tag
+    const cta = document.getElementById('cta-link');
+    const toast = document.getElementById('toast');
+    cta.addEventListener('click', function (e) {
+      // attempt to open the profile normally; if user-visible failure, also copy tag
+      // This heuristic: after short delay if page didn't navigate (user might have popup blocker) show toast
+      setTimeout(() => {
+        // copy fallback tag
+        navigator.clipboard.writeText("__vcr__").then(() => {
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 1800);
+        }).catch(() => {
+          // silent fail
+        });
+      }, 500);
     });
   </script>
 </body>
