@@ -24,15 +24,7 @@
       backdrop-filter: blur(4px);
       overflow: hidden;
     }
-    // Animate GitHub button reveal with opacity and slide up
-gsap.to(".links .btn", {
-  opacity: 1,
-  y: 0,
-  duration: 0.8,
-  delay: 0.8,
-  stagger: 0.15,
-  ease: "back.out(1.7)"
-});
+
     #enter-btn-wrapper {
       perspective: 800px;
     }
@@ -99,51 +91,9 @@ gsap.to(".links .btn", {
     #enter-btn:active {
       transform: scale(0.95);
     }
-
-    /* MUTE BUTTON */
-    #mute-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(124, 92, 255, 0.8);
-      border: none;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 15px rgba(124, 92, 255, 0.7);
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      z-index: 4000;
-    }
-
-    #mute-btn:hover {
-      background: rgba(124, 92, 255, 1);
-      transform: scale(1.1);
-    }
-
-    #mute-icon {
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      fill: white;
-    }
-
-    #mute-btn.muted #mute-icon {
-      opacity: 0.5;
-      transform: rotate(-20deg);
-    }
   </style>
 </head>
 <body>
-
-  <!-- MUTE BUTTON -->
-  <button id="mute-btn" aria-label="Mute audio" title="Mute/Unmute">
-    <svg id="mute-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="pointer-events:none;">
-      <path d="M3 9v6h4l5 5V4L7 9H3z"/>
-      <line x1="19" y1="5" x2="5" y2="19" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-  </button>
 
   <!-- ENTRY OVERLAY -->
   <div id="entry-overlay">
@@ -178,7 +128,9 @@ gsap.to(".links .btn", {
         A one-of-a-kind developer. Whatever you can imagine, I'll have it done in less than a day. I build with love and skill, your projects are safe with me. (rhymes with grug)
       </p>
       <div class="links">
-        <a href="https://github.com/basilisezkid23" target="_blank" class="btn">GitHub</a>
+        <a href="https://github.com/basilisezkid23" target="_blank" class="btn" style="opacity: 0; transform: translateY(10px);">
+          GitHub
+        </a>
       </div>
     </div>
   </section>
@@ -381,61 +333,33 @@ gsap.to(".links .btn", {
       // button press feedback
       gsap.to(enterBtn, { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1, ease: "power1.inOut" });
 
-      // fade out overlay
-      gsap.to(overlay, {
-        opacity: 0,
-        duration: 1,
-        ease: "power2.inOut",
-        onComplete: () => {
-          overlay.style.display = 'none';
-        }
-      });
+      // play intro music (will require user gesture to allow)
+      intro.play().catch(() => { /* Ignore autoplay restrictions */ });
 
-      // Play intro music
-      intro.volume = 0.45;
-      intro.play().catch(() => {
-        // auto-play blocked, wait for user interaction, fallback handled here if needed
-      });
+      // hide overlay and enable scroll
+      gsap.to(overlay, { opacity: 0, duration: 0.7, ease: "power2.inOut", onComplete: () => {
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
 
-      // When intro ends, play ambient loop
-      intro.onended = () => {
-        ambient.volume = 0.75;
-        ambient.play();
-      };
-
-      // Allow scrolling after entry
-      document.body.style.overflow = '';
+        // start ambient music
+        ambient.play().catch(() => { /* Ignore autoplay restrictions */ });
+      }});
     });
 
-    // Mute button logic
+    // Animate GitHub button reveal inside script (no CSS needed)
+    window.addEventListener('load', () => {
+      const githubBtn = document.querySelector('.links .btn');
+      if (!githubBtn) return;
 
-    const muteBtn = document.getElementById('mute-btn');
-    let isMuted = false;
+      // Start hidden & down (already set inline style)
+      // Add smooth transition
+      githubBtn.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
 
-    muteBtn.addEventListener('click', () => {
-      isMuted = !isMuted;
-
-      // Toggle muted class for style
-      muteBtn.classList.toggle('muted', isMuted);
-
-      // Mute/unmute audio elements
-      intro.muted = isMuted;
-      ambient.muted = isMuted;
-
-      // Optional: pause playing audio if muted
-      if (isMuted) {
-        intro.pause();
-        ambient.pause();
-      } else {
-        // If the intro ended, play ambient; else resume intro
-        if (intro.ended) {
-          ambient.play();
-        } else {
-          intro.play();
-        }
-      }
+      setTimeout(() => {
+        githubBtn.style.opacity = '1';
+        githubBtn.style.transform = 'translateY(0)';
+      }, 400);
     });
   </script>
-
 </body>
 </html>
