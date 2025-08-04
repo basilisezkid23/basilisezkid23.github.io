@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <link rel="stylesheet" href="style.css" />
   <style>
@@ -189,52 +190,52 @@
   </section>
 
   <!-- PROJECTS -->
-<section class="projects" id="projects">
-  <h2>Projects</h2>
-  <div class="projects-grid">
+  <section class="projects" id="projects">
+    <h2>Projects</h2>
+    <div class="projects-grid">
 
-    <div class="project-card">
-      <div class="card-inner">
-        <h3>YoursOnlyERP</h3>
-        <p>A custom made ERP program for an anonymous company located in Italy!</p>
-        <div class="actions">
-          <!-- removed Visit Site button -->
+      <div class="project-card">
+        <div class="card-inner">
+          <h3>YoursOnlyERP</h3>
+          <p>A custom made ERP program for an anonymous company located in Italy!</p>
+          <div class="actions">
+            <!-- removed Visit Site button -->
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="project-card">
-      <div class="card-inner">
-        <h3>Auto-builder</h3>
-        <p>A custom made AI algorithm system designed to bring your projects to life in a matter of seconds!</p>
-        <div class="actions">
-          <!-- removed Visit Site button -->
+      <div class="project-card">
+        <div class="card-inner">
+          <h3>Auto-builder</h3>
+          <p>A custom made AI algorithm system designed to bring your projects to life in a matter of seconds!</p>
+          <div class="actions">
+            <!-- removed Visit Site button -->
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="project-card">
-      <div class="card-inner">
-        <h3>Pixel-A-Done</h3>
-        <p>Main developer of client-side scripts!</p>
-        <div class="actions">
-          <!-- removed Visit Site button -->
+      <div class="project-card">
+        <div class="card-inner">
+          <h3>Pixel-A-Done</h3>
+          <p>Main developer of client-side scripts!</p>
+          <div class="actions">
+            <!-- removed Visit Site button -->
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="project-card">
-      <div class="card-inner">
-        <h3>This space is empty, but it waits for a new project, maybe it can be yours..!</h3>
-        <p>Your idea will be proudly presented on this site. Let's discuss!</p>
-        <div class="actions">
-          <a href="#contact" class="btn small">Let's Work Together</a>
+      <div class="project-card">
+        <div class="card-inner">
+          <h3>This space is empty, but it waits for a new project, maybe it can be yours..!</h3>
+          <p>Your idea will be proudly presented on this site. Let's discuss!</p>
+          <div class="actions">
+            <a href="#contact" class="btn small">Let's Work Together</a>
+          </div>
         </div>
       </div>
-    </div>
 
-  </div>
-</section>
+    </div>
+  </section>
 
 
   <!-- CALL TO ACTION -->
@@ -304,68 +305,18 @@
         x: '+=10',
         repeat: -1,
         yoyo: true,
-        duration: 8 + Math.random() * 4,
-        ease: "sine.inOut",
-        delay
-      });
-      gsap.to(b, {
-        rotation: 15,
-        repeat: -1,
-        yoyo: true,
-        duration: 12 + Math.random() * 5,
-        ease: "sine.inOut",
-        delay
+        duration: 8,
+        delay,
+        ease: "sine.inOut"
       });
     });
 
-    // hover tilt on project cards
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        gsap.to(card, { rotationY: x * 10, rotationX: -y * 8, scale: 1.02, transformPerspective: 600, ease: "power1.out", duration: 0.4 });
-      });
-      card.addEventListener('mouseleave', () => {
-        gsap.to(card, { rotationY: 0, rotationX: 0, scale: 1, ease: "power1.out", duration: 0.4 });
-      });
-    });
-
-    // ENTRY BUTTON & AUDIO CONTROLS
-
-    const entryOverlay = document.getElementById('entry-overlay');
-    const enterBtn = document.getElementById('enter-btn');
+    // Audio mute toggle
     const muteBtn = document.getElementById('mute-btn');
     const introMusic = document.getElementById('intro-music');
     const ambientMusic = document.getElementById('ambient-music');
 
     let isMuted = false;
-
-    // Initially mute audio elements to avoid browser autoplay issues
-    introMusic.muted = true;
-    ambientMusic.muted = true;
-
-    // Play intro on button click, then ambient loops after intro ends
-    enterBtn.addEventListener('click', () => {
-      // Remove entry overlay with fade-out animation
-      gsap.to(entryOverlay, { opacity: 0, duration: 0.8, ease: "power1.in", onComplete: () => {
-        entryOverlay.style.display = "none";
-      }});
-
-      // Unmute and play intro
-      introMusic.muted = isMuted;
-      ambientMusic.muted = isMuted;
-      introMusic.currentTime = 0;
-      introMusic.play();
-
-      // When intro ends, play ambient in loop
-      introMusic.onended = () => {
-        ambientMusic.currentTime = 0;
-        ambientMusic.play();
-      };
-    });
-
-    // Mute button toggle
     muteBtn.addEventListener('click', () => {
       isMuted = !isMuted;
       introMusic.muted = isMuted;
@@ -373,15 +324,42 @@
       muteBtn.textContent = isMuted ? '🔇' : '🔊';
     });
 
-    // Animate GitHub button reveal after hero intro animations
-    gsap.to(".links .btn", {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      delay: 2.5,
-      ease: "power3.out"
-    });
+    // Enter button + scrolling and slide-in effect
+    const enterBtn = document.getElementById('enter-btn');
+    const entryOverlay = document.getElementById('entry-overlay');
 
+    enterBtn.addEventListener('click', () => {
+      // Fade out overlay
+      gsap.to(entryOverlay, { opacity: 0, duration: 0.8, ease: "power1.in", onComplete: () => {
+        entryOverlay.style.display = "none";
+
+        // Smooth scroll down to #skills over 3 seconds
+        gsap.to(window, {
+          scrollTo: "#skills",
+          duration: 3,
+          ease: "power1.inOut",
+          onComplete: () => {
+            // Slide in the main sections
+            document.querySelectorAll('.skills, .projects, .contact').forEach(section => {
+              section.classList.add('slide-in');
+            });
+          }
+        });
+      }});
+
+      // Unmute and play intro music
+      introMusic.muted = isMuted;
+      ambientMusic.muted = isMuted;
+      introMusic.currentTime = 0;
+      introMusic.play();
+
+      // When intro ends, play ambient music loop
+      introMusic.onended = () => {
+        ambientMusic.currentTime = 0;
+        ambientMusic.play();
+      };
+    });
   </script>
+
 </body>
 </html>
