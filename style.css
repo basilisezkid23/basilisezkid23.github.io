@@ -346,3 +346,12 @@ footer a {
   opacity: 1;
   transform: translateX(0);
 }
+.skills, .projects {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.skill, .project-card {
+  opacity: 0;
+  transform: translateY(20px);
+}
