@@ -125,8 +125,6 @@
       transform: translateY(10px);
     }
 
-    /* Your existing styles ... */
-
   </style>
 </head>
 <body>
@@ -237,7 +235,6 @@
     </div>
   </section>
 
-
   <!-- CALL TO ACTION -->
   <section class="contact" id="contact">
     <div class="cta-box">
@@ -298,25 +295,26 @@
     gsap.from(".cta-box", { scale: 0.95, opacity: 0, duration: 1, delay: 2.2, ease: "elastic.out(1,0.5)" });
 
     // floaters subtle motion
-    gsap.utils.toArray('.blob').forEach((b) => {
-      const delay = parseFloat(b.style.getPropertyValue('--delay')) || 0;
-      gsap.to(b, {
+    gsap.utils.toArray('.blob').forEach(blob => {
+      gsap.to(blob, {
+        x: '+=30',
         y: '+=15',
-        x: '+=10',
-        repeat: -1,
+        duration: 7,
         yoyo: true,
-        duration: 8,
-        delay,
-        ease: "sine.inOut"
+        repeat: -1,
+        ease: 'sine.inOut',
+        delay: parseFloat(blob.style.getPropertyValue('--delay')) || 0
       });
     });
 
-    // Audio mute toggle
-    const muteBtn = document.getElementById('mute-btn');
+    // Entry overlay & animation with scroll + layered animations on enter button click
+    const entryOverlay = document.getElementById('entry-overlay');
+    const enterBtn = document.getElementById('enter-btn');
     const introMusic = document.getElementById('intro-music');
     const ambientMusic = document.getElementById('ambient-music');
-
+    const muteBtn = document.getElementById('mute-btn');
     let isMuted = false;
+
     muteBtn.addEventListener('click', () => {
       isMuted = !isMuted;
       introMusic.muted = isMuted;
@@ -324,42 +322,59 @@
       muteBtn.textContent = isMuted ? '🔇' : '🔊';
     });
 
-    // Enter button + scrolling and slide-in effect
-    const enterBtn = document.getElementById('enter-btn');
-    const entryOverlay = document.getElementById('entry-overlay');
-
     enterBtn.addEventListener('click', () => {
-      // Fade out overlay
-      gsap.to(entryOverlay, { opacity: 0, duration: 0.8, ease: "power1.in", onComplete: () => {
-        entryOverlay.style.display = "none";
+      gsap.to(entryOverlay, {
+        opacity: 0,
+        duration: 0.8,
+        ease: "power1.in",
+        onComplete: () => {
+          entryOverlay.style.display = "none";
+        }
+      });
 
-        // Smooth scroll down to #skills over 3 seconds
-        gsap.to(window, {
-          scrollTo: "#skills",
-          duration: 3,
-          ease: "power1.inOut",
-          onComplete: () => {
-            // Slide in the main sections
-            document.querySelectorAll('.skills, .projects, .contact').forEach(section => {
-              section.classList.add('slide-in');
-            });
-          }
-        });
-      }});
-
-      // Unmute and play intro music
       introMusic.muted = isMuted;
       ambientMusic.muted = isMuted;
       introMusic.currentTime = 0;
       introMusic.play();
 
-      // When intro ends, play ambient music loop
       introMusic.onended = () => {
         ambientMusic.currentTime = 0;
         ambientMusic.play();
       };
+
+      gsap.to(window, {
+        scrollTo: "#skills",
+        duration: 3,
+        ease: "power1.inOut",
+        onComplete: () => {
+          const tl = gsap.timeline();
+
+          // Slide in the skills container
+          tl.to(".skills", { opacity: 1, x: 0, duration: 1 });
+
+          // Stagger fade/slide in skills items
+          tl.to(".skill", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.15,
+            duration: 0.8,
+            ease: "power2.out"
+          }, "-=0.5");
+
+          // Slide in projects container
+          tl.to(".projects", { opacity: 1, x: 0, duration: 1, delay: 0.4 });
+
+          // Stagger fade/slide in project cards
+          tl.to(".project-card", {
+            opacity: 1,
+            y: 0,
+            stagger: 0.2,
+            duration: 0.8,
+            ease: "power2.out"
+          }, "-=0.6");
+        }
+      });
     });
   </script>
-
 </body>
 </html>
