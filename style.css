@@ -330,3 +330,19 @@ footer a {
   mix-blend-mode: overlay;
   will-change: transform;
 }
+/* Sections initially shifted left and transparent */
+.skills,
+.projects,
+.contact {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+/* Slide-in animation triggered after scroll */
+.skills.slide-in,
+.projects.slide-in,
+.contact.slide-in {
+  opacity: 1;
+  transform: translateX(0);
+}
