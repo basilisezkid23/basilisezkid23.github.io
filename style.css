@@ -200,6 +200,35 @@ section {
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   margin-top: 14px;
 }
+
+/* Initial state and animation for skills section and its children */
+.skills,
+.projects,
+.contact {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.skills.slide-in,
+.projects.slide-in,
+.contact.slide-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Individual skills and project cards start hidden and slide upward */
+.skill,
+.project-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.skill.visible,
+.project-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .skill {
   background: rgba(255, 255, 255, 0.03);
   padding: 16px;
@@ -208,7 +237,6 @@ section {
   font-weight: 600;
   position: relative;
   overflow: hidden;
-  transition: transform var(--transition);
   user-select: none;
 }
 .skill:hover {
@@ -329,29 +357,4 @@ footer a {
   border-radius: 50%;
   mix-blend-mode: overlay;
   will-change: transform;
-}
-/* Sections initially shifted left and transparent */
-.skills,
-.projects,
-.contact {
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: opacity 1.2s ease, transform 1.2s ease;
-}
-
-/* Slide-in animation triggered after scroll */
-.skills.slide-in,
-.projects.slide-in,
-.contact.slide-in {
-  opacity: 1;
-  transform: translateX(0);
-}
-.skills, .projects {
-  opacity: 0;
-  transform: translateX(-50px);
-}
-
-.skill, .project-card {
-  opacity: 0;
-  transform: translateY(20px);
 }
