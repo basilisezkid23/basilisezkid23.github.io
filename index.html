@@ -219,18 +219,9 @@
       user-select: none;
       opacity: 0;
       transform: translateY(20px);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: center;
     }
     .skill:hover {
       transform: scale(1.04);
-    }
-    .skill img {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
     }
 
     /* Projects */
@@ -357,7 +348,259 @@
       mix-blend-mode: overlay;
       will-change: transform;
     }
+  </style>
+</head>
+<body>
 
+  <!-- ENTRY OVERLAY -->
+  <div id="entry-overlay">
+    <div id="enter-btn-wrapper">
+      <button id="enter-btn">
+        <div class="glow"></div>
+        <div class="text">Click to Enter</div>
+        <div class="shine"></div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mute Button -->
+  <button id="mute-btn" title="Mute/Unmute Audio" aria-label="Mute or unmute audio">🔊</button>
+
+  <!-- floating background shapes -->
+  <div class="floaters">
+    <div class="blob" style="--size:180px; --x:10%; --y:20%; --delay:0s;"></div>
+    <div class="blob" style="--size:120px; --x:80%; --y:10%; --delay:1s;"></div>
+    <div class="blob" style="--size:220px; --x:65%; --y:75%; --delay:.5s;"></div>
+    <div class="blob" style="--size:140px; --x:25%; --y:80%; --delay:1.2s;"></div>
+  </div>
+
+  <!-- HERO / INTRO -->
+  <section class="hero" id="hero">
+    <div class="text-wrap">
+      <div class="small-label">Contact me! Let's chat!</div>
+      <h1 class="typewriter">
+        <span class="typed">Developer</span><span class="cursor">|</span>
+      </h1>
+      <p class="desc">
+        A one-of-a-kind developer. Whatever you can imagine, I'll have it done in less than a day. I build with love and skill, your projects are safe with me. (rhymes with grug)
+      </p>
+      <div class="links">
+        <a href="https://github.com/basilisezkid23" target="_blank" class="btn">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="skills" id="skills">
+    <h2>Technical Skills</h2>
+    <div class="skills-grid">
+      <div class="skill">HTML</div>
+      <div class="skill">CSS</div>
+      <div class="skill">TypeScript</div>
+      <div class="skill">JavaScript</div>
+      <div class="skill">C++</div>
+      <div class="skill">C#</div>
+      <div class="skill">Lua</div>
+      <div class="skill">Vite</div>
+      <div class="skill">React</div>
+      <div class="skill">Python</div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects" id="projects">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="card-inner">
+          <h3>YoursOnlyERP</h3>
+          <p>A custom made ERP program for an anonymous company located in Italy!</p>
+          <div class="actions">
+            <!-- Visit Site button removed -->
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="card-inner">
+          <h3>Auto-builder</h3>
+          <p>A custom made AI algorithm system designed to bring your projects to life in a matter of seconds!</p>
+          <div class="actions">
+            <!-- Visit Site button removed -->
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="card-inner">
+          <h3>Pixel-A-Done</h3>
+          <p>Main developer of client-side scripts!</p>
+          <div class="actions">
+            <!-- Visit Site button removed -->
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="card-inner">
+          <h3>This space is empty, but it waits for a new project, maybe it can be yours..!</h3>
+          <p>Your idea will be proudly presented on this site. Let's discuss!</p>
+          <div class="actions">
+            <a href="#contact" class="btn small">Let's Work Together</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CALL TO ACTION -->
+  <section class="contact" id="contact">
+    <div class="cta-box">
+      <h2>Would you like to see your idea shine?</h2>
+      <p>Send me a Direct Message on Discord <strong>@__vcr__</strong> so we can make your dreams come true.</p>
+      <div class="cta-btn-wrap">
+        <a id="cta-link" href="https://discord.com/users/__vcr__" target="_blank" class="btn large pulse">Let's Talk</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>© <span id="year"></span> basilisezkid23, Developer. Code &amp; design by basilisezkid23. <a href="https://github.com/basilisezkid23" target="_blank">basilisezkid23, GitHost website hoster, All Rights Reserved</a>.</div>
+  </footer>
+
+  <!-- Audio Elements -->
+  <audio id="intro-music" preload="auto">
+    <source src="https://raw.githubusercontent.com/basilisezkid23/basilisezkid23.github.io/main/Toodles%20theme%20for%20%40Toodles551.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <audio id="ambient-music" loop preload="auto">
+    <source src="https://raw.githubusercontent.com/basilisezkid23/basilisezkid23.github.io/main/sky-in-the-night-slow-ambient-music-minecraft-music-231465.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // typewriter effect (simple loop)
+    const txt = "Developer";
+    const target = document.querySelector('.typed');
+    let idx = 0;
+    function typeLoop() {
+      if (idx <= txt.length) {
+        target.textContent = txt.slice(0, idx);
+        idx++;
+        setTimeout(typeLoop, 100);
+      } else {
+        // blink cursor
+        setInterval(() => {
+          document.querySelector('.cursor').classList.toggle('hidden');
+        }, 500);
+      }
+    }
+    typeLoop();
+
+    // GSAP entry animations
+    gsap.from(".hero .small-label", { y: 20, opacity: 0, duration: 0.8, ease: "power3.out" });
+    gsap.from(".hero h1", { y: 10, opacity: 0, duration: 1, delay: 0.2, ease: "power3.out" });
+    gsap.from(".hero .desc", { y: 10, opacity: 0, duration: 1, delay: 0.5, ease: "power3.out" });
+    gsap.from(".links .btn", { y: 10, opacity: 0, duration: 0.8, delay: 0.8, stagger: 0.15, ease: "back.out(1.7)" });
+
+    // Skills → Projects → Contact animation chain with timeline
+    const tl = gsap.timeline({ defaults: { duration: 0.6, ease: "power2.out" } });
+    tl.to(".skill", { opacity: 1, y: 0, stagger: 0.15, delay: 0.3 })
+      .to(".projects", { opacity: 1, x: 0 }, "+=0.3")
+      .to(".project-card", { opacity: 1, y: 0, stagger: 0.15 }, "-=0.3")
+      .to(".contact", { opacity: 1, x: 0, delay: 0.3 })
+      .to(".cta-box", { opacity: 1, scale: 1, ease: "elastic.out(1, 0.6)" }, "-=0.3");
+
+    // floaters subtle motion
+    gsap.utils.toArray('.blob').forEach(blob => {
+      gsap.to(blob, {
+        x: '+=30',
+        y: '+=15',
+        duration: 7,
+        yoyo: true,
+        repeat: -1,
+        ease: 'sine.inOut',
+        delay: parseFloat(blob.style.getPropertyValue('--delay')) || 0
+      });
+    });
+
+    // Entry overlay & animation with scroll + layered animations on enter button click
+    const entryOverlay = document.getElementById('entry-overlay');
+    const enterBtn = document.getElementById('enter-btn');
+    const introMusic = document.getElementById('intro-music');
+    const ambientMusic = document.getElementById('ambient-music');
+    const muteBtn = document.getElementById('mute-btn');
+    let isMuted = false;
+
+    muteBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+      introMusic.muted = isMuted;
+      ambientMusic.muted = isMuted;
+      muteBtn.textContent = isMuted ? '🔇' : '🔊';
+    });
+
+    enterBtn.addEventListener('click', () => {
+      gsap.to(entryOverlay, {
+        opacity: 0,
+        duration: 0.8,
+        ease: "power1.in",
+        onComplete: () => {
+          entryOverlay.style.display = "none";
+        }
+      });
+
+      introMusic.muted = isMuted;
+      ambientMusic.muted = isMuted;
+      introMusic.currentTime = 0;
+      introMusic.play();
+
+      introMusic.onended = () => {
+        ambientMusic.currentTime = 0;
+        ambientMusic.play();
+      };
+
+      gsap.to(window, {
+        scrollTo: "#skills",
+        duration: 3,
+        ease: "power1.inOut"
+      });
+    });
+
+    // Fix flicker when dragging contact button
+    const contactBtn = document.querySelector(".cta-box .btn");
+    if (contactBtn) {
+      let isDragging = false;
+
+      contactBtn.addEventListener("mousedown", () => {
+        isDragging = false;
+      });
+
+      contactBtn.addEventListener("mousemove", () => {
+        isDragging = true;
+        contactBtn.style.pointerEvents = "none"; // disable pointer events during drag to avoid flicker
+      });
+
+      contactBtn.addEventListener("mouseup", () => {
+        if (isDragging) {
+          contactBtn.style.pointerEvents = "auto";
+          isDragging = false;
+        }
+      });
+
+      contactBtn.addEventListener("mouseleave", () => {
+        contactBtn.style.pointerEvents = "auto";
+        isDragging = false;
+      });
+    }
+  </script>
+
+  <style>
     /* === Click to Enter Overlay & Button Styles === */
     #entry-overlay {
       position: fixed;
@@ -369,7 +612,6 @@
       z-index: 3000;
       backdrop-filter: blur(4px);
       overflow: hidden;
-      transition: opacity 0.8s ease;
     }
 
     #enter-btn-wrapper {
@@ -467,174 +709,5 @@
       box-shadow: 0 25px 70px -10px rgba(124,92,255,.7);
     }
   </style>
-</head>
-<body>
-
-  <!-- ENTRY OVERLAY -->
-  <div id="entry-overlay">
-    <div id="enter-btn-wrapper">
-      <button id="enter-btn">
-        <div class="glow"></div>
-        <div class="text">Click to Enter</div>
-        <div class="shine"></div>
-      </button>
-    </div>
-  </div>
-
-  <!-- Mute Button -->
-  <button id="mute-btn" title="Mute/Unmute Audio" aria-label="Mute or unmute audio">🔊</button>
-
-  <!-- floating background shapes -->
-  <div class="floaters">
-    <div class="blob" style="--size:180px; --x:10%; --y:20%; --delay:0s;"></div>
-    <div class="blob" style="--size:120px; --x:80%; --y:10%; --delay:1s;"></div>
-    <div class="blob" style="--size:220px; --x:65%; --y:75%; --delay:.5s;"></div>
-    <div class="blob" style="--size:140px; --x:25%; --y:80%; --delay:1.2s;"></div>
-  </div>
-
-  <!-- HERO / INTRO -->
-  <section class="hero" id="hero">
-    <div class="text-wrap">
-      <div class="small-label">Contact me! Let's chat!</div>
-      <h1 class="typewriter">
-        <span class="typed">Developer</span><span class="cursor">|</span>
-      </h1>
-      <p class="desc">
-        A one-of-a-kind developer. Whatever you can imagine, I'll have it done in less than a day. I build with love and skill, your projects are safe with me. (rhymes with grug)
-      </p>
-      <div class="links">
-        <a href="https://github.com/basilisezkid23" target="_blank" class="btn">GitHub</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section class="skills" id="skills">
-    <h2>Technical Skills</h2>
-    <div class="skills-grid">
-      <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" /> HTML</div>
-      <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" /> CSS</div>
-      <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" /> TypeScript</div>
-      <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" /> JavaScript</div>
-      <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" /> React</div>
-      <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" /> Node.js</div>
-      <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" /> C++</div>
-      <div class="skill"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" /> Python</div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section class="projects" id="projects">
-    <h2>Projects</h2>
-    <div class="projects-grid">
-      <div class="project-card" tabindex="0">
-        <div class="card-inner">
-          <h3>Awesome Project #1</h3>
-          <p>This project does amazing things with JavaScript and React.</p>
-          <div class="actions">
-            <a href="#" class="btn small">View</a>
-            <a href="#" class="btn small outline">Source</a>
-          </div>
-        </div>
-      </div>
-      <div class="project-card" tabindex="0">
-        <div class="card-inner">
-          <h3>Cool App #2</h3>
-          <p>A Node.js powered backend service with real-time features.</p>
-          <div class="actions">
-            <a href="#" class="btn small">View</a>
-            <a href="#" class="btn small outline">Source</a>
-          </div>
-        </div>
-      </div>
-      <!-- Add more projects as needed -->
-    </div>
-  </section>
-
-  <!-- CALL TO ACTION -->
-  <section class="contact" id="contact">
-    <div class="cta-box">
-      <h2>Interested in working together?</h2>
-      <p>Contact me for your next project or just to say hi!</p>
-      <div class="cta-btn-wrap">
-        <a href="mailto:your.email@example.com" class="btn large pulse">Get In Touch</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    &copy; <span id="year"></span> Developer Portfolio. Made with ❤️.
-  </footer>
-
-  <!-- AUDIO ELEMENTS -->
-  <audio id="intro-music" src="https://cdn.pixabay.com/download/audio/2021/09/27/audio_9e962fdfaa.mp3?filename=calm-synthwave-ambient-11681.mp3" loop preload="auto"></audio>
-  <audio id="heartbeat-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_36d2c19b4d.mp3?filename=heartbeat-115857.mp3" loop preload="auto"></audio>
-
-  <!-- SCRIPTS -->
-  <script>
-    // Set year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Typewriter effect on hero text
-    const typedText = document.querySelector('.typed');
-    const cursor = document.querySelector('.cursor');
-    let index = 0;
-    const words = ['Developer'];
-    function typeWord() {
-      if (index < words[0].length) {
-        typedText.textContent += words[0][index];
-        index++;
-        setTimeout(typeWord, 150);
-      } else {
-        cursor.classList.remove('hidden');
-      }
-    }
-    typedText.textContent = '';
-    typeWord();
-
-    // AUDIO ELEMENTS
-    const introMusic = document.getElementById('intro-music');
-    const heartbeatSound = document.getElementById('heartbeat-sound');
-
-    // ENTRY OVERLAY LOGIC
-    const entryOverlay = document.getElementById('entry-overlay');
-    const enterBtn = document.getElementById('enter-btn');
-
-    enterBtn.addEventListener('click', () => {
-      entryOverlay.style.opacity = '0';
-      entryOverlay.style.pointerEvents = 'none';
-      // Start playing intro music once entry overlay removed
-      introMusic.volume = 0.4;
-      introMusic.play().catch(() => {
-        // Autoplay might be blocked until user interaction, but since we clicked, should be OK
-      });
-    });
-
-    // MUTE BUTTON LOGIC
-    const muteBtn = document.getElementById('mute-btn');
-
-    // Initially unmuted
-    let isMuted = false;
-
-    function updateMuteButton() {
-      muteBtn.textContent = isMuted ? '🔇' : '🔊';
-      introMusic.muted = isMuted;
-      heartbeatSound.muted = isMuted;
-    }
-
-    muteBtn.addEventListener('click', () => {
-      isMuted = !isMuted;
-      updateMuteButton();
-    });
-
-    // Set initial mute state
-    updateMuteButton();
-
-    // Optionally: pause music if overlay still visible
-    if (entryOverlay.style.pointerEvents !== 'none') {
-      introMusic.pause();
-    }
-  </script>
 </body>
 </html>
