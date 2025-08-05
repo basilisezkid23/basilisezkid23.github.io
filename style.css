@@ -379,10 +379,10 @@ footer a {
   gap: 8px;
 }
 .skill img {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   vertical-align: middle;
   margin-right: 8px;
-  filter: invert(90%) brightness(110%);
+  filter: brightness(0) invert(1); /* white-ish for dark bg */
 }
 
