@@ -219,9 +219,20 @@
       user-select: none;
       opacity: 0;
       transform: translateY(20px);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
     .skill:hover {
       transform: scale(1.04);
+    }
+    .skill-icon {
+      width: 26px;
+      height: 26px;
+      filter: invert(85%) sepia(6%) saturate(0%) hue-rotate(161deg) brightness(110%) contrast(88%);
+      flex-shrink: 0;
     }
 
     /* Projects */
@@ -394,16 +405,46 @@
   <section class="skills" id="skills">
     <h2>Technical Skills</h2>
     <div class="skills-grid">
-      <div class="skill">HTML</div>
-      <div class="skill">CSS</div>
-      <div class="skill">TypeScript</div>
-      <div class="skill">JavaScript</div>
-      <div class="skill">C++</div>
-      <div class="skill">C#</div>
-      <div class="skill">Lua</div>
-      <div class="skill">Vite</div>
-      <div class="skill">React</div>
-      <div class="skill">Python</div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/html5.svg" alt="HTML" class="skill-icon" />
+        HTML
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/css3.svg" alt="CSS" class="skill-icon" />
+        CSS
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/typescript.svg" alt="TypeScript" class="skill-icon" />
+        TypeScript
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/javascript.svg" alt="JavaScript" class="skill-icon" />
+        JavaScript
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/cplusplus.svg" alt="C++" class="skill-icon" />
+        C++
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/csharp.svg" alt="C#" class="skill-icon" />
+        C#
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/lua.svg" alt="Lua" class="skill-icon" />
+        Lua
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/vite.svg" alt="Vite" class="skill-icon" />
+        Vite
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/react.svg" alt="React" class="skill-icon" />
+        React
+      </div>
+      <div class="skill">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/python.svg" alt="Python" class="skill-icon" />
+        Python
+      </div>
     </div>
   </section>
 
@@ -466,11 +507,12 @@
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer>
-    <div>© <span id="year"></span> basilisezkid23, Developer. Code &amp; design by basilisezkid23. <a href="https://github.com/basilisezkid23" target="_blank">basilisezkid23, GitHost website hoster, All Rights Reserved</a>.</div>
+    &copy; 2023 Developer Portfolio - All rights reserved.
   </footer>
 
-  <!-- Audio Elements -->
+  <!-- AUDIOS -->
   <audio id="intro-music" preload="auto">
     <source src="https://raw.githubusercontent.com/basilisezkid23/basilisezkid23.github.io/main/Toodles%20theme%20for%20%40Toodles551.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
@@ -481,233 +523,7 @@
     Your browser does not support the audio element.
   </audio>
 
-  <script>
-    // year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // typewriter effect (simple loop)
-    const txt = "Developer";
-    const target = document.querySelector('.typed');
-    let idx = 0;
-    function typeLoop() {
-      if (idx <= txt.length) {
-        target.textContent = txt.slice(0, idx);
-        idx++;
-        setTimeout(typeLoop, 100);
-      } else {
-        // blink cursor
-        setInterval(() => {
-          document.querySelector('.cursor').classList.toggle('hidden');
-        }, 500);
-      }
-    }
-    typeLoop();
-
-    // GSAP entry animations
-    gsap.from(".hero .small-label", { y: 20, opacity: 0, duration: 0.8, ease: "power3.out" });
-    gsap.from(".hero h1", { y: 10, opacity: 0, duration: 1, delay: 0.2, ease: "power3.out" });
-    gsap.from(".hero .desc", { y: 10, opacity: 0, duration: 1, delay: 0.5, ease: "power3.out" });
-    gsap.from(".links .btn", { y: 10, opacity: 0, duration: 0.8, delay: 0.8, stagger: 0.15, ease: "back.out(1.7)" });
-
-    // Skills → Projects → Contact animation chain with timeline
-    const tl = gsap.timeline({ defaults: { duration: 0.6, ease: "power2.out" } });
-    tl.to(".skill", { opacity: 1, y: 0, stagger: 0.15, delay: 0.3 })
-      .to(".projects", { opacity: 1, x: 0 }, "+=0.3")
-      .to(".project-card", { opacity: 1, y: 0, stagger: 0.15 }, "-=0.3")
-      .to(".contact", { opacity: 1, x: 0, delay: 0.3 })
-      .to(".cta-box", { opacity: 1, scale: 1, ease: "elastic.out(1, 0.6)" }, "-=0.3");
-
-    // floaters subtle motion
-    gsap.utils.toArray('.blob').forEach(blob => {
-      gsap.to(blob, {
-        x: '+=30',
-        y: '+=15',
-        duration: 7,
-        yoyo: true,
-        repeat: -1,
-        ease: 'sine.inOut',
-        delay: parseFloat(blob.style.getPropertyValue('--delay')) || 0
-      });
-    });
-
-    // Entry overlay & animation with scroll + layered animations on enter button click
-    const entryOverlay = document.getElementById('entry-overlay');
-    const enterBtn = document.getElementById('enter-btn');
-    const introMusic = document.getElementById('intro-music');
-    const ambientMusic = document.getElementById('ambient-music');
-    const muteBtn = document.getElementById('mute-btn');
-    let isMuted = false;
-
-    muteBtn.addEventListener('click', () => {
-      isMuted = !isMuted;
-      introMusic.muted = isMuted;
-      ambientMusic.muted = isMuted;
-      muteBtn.textContent = isMuted ? '🔇' : '🔊';
-    });
-
-    enterBtn.addEventListener('click', () => {
-      gsap.to(entryOverlay, {
-        opacity: 0,
-        duration: 0.8,
-        ease: "power1.in",
-        onComplete: () => {
-          entryOverlay.style.display = "none";
-        }
-      });
-
-      introMusic.muted = isMuted;
-      ambientMusic.muted = isMuted;
-      introMusic.currentTime = 0;
-      introMusic.play();
-
-      introMusic.onended = () => {
-        ambientMusic.currentTime = 0;
-        ambientMusic.play();
-      };
-
-      gsap.to(window, {
-        scrollTo: "#skills",
-        duration: 3,
-        ease: "power1.inOut"
-      });
-    });
-
-    // Fix flicker when dragging contact button
-    const contactBtn = document.querySelector(".cta-box .btn");
-    if (contactBtn) {
-      let isDragging = false;
-
-      contactBtn.addEventListener("mousedown", () => {
-        isDragging = false;
-      });
-
-      contactBtn.addEventListener("mousemove", () => {
-        isDragging = true;
-        contactBtn.style.pointerEvents = "none"; // disable pointer events during drag to avoid flicker
-      });
-
-      contactBtn.addEventListener("mouseup", () => {
-        if (isDragging) {
-          contactBtn.style.pointerEvents = "auto";
-          isDragging = false;
-        }
-      });
-
-      contactBtn.addEventListener("mouseleave", () => {
-        contactBtn.style.pointerEvents = "auto";
-        isDragging = false;
-      });
-    }
-  </script>
-
-  <style>
-    /* === Click to Enter Overlay & Button Styles === */
-    #entry-overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(31,24,80,0.85) 0%, rgba(15,11,30,1) 80%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 3000;
-      backdrop-filter: blur(4px);
-      overflow: hidden;
-    }
-
-    #enter-btn-wrapper {
-      perspective: 800px;
-    }
-
-    #enter-btn {
-      position: relative;
-      padding: 18px 50px;
-      font-size: 1.5rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #8c5cff, #6f54f8);
-      color: #fff;
-      border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      outline: none;
-      overflow: hidden;
-      letter-spacing: 1px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transform-style: preserve-3d;
-      box-shadow: 0 30px 80px -10px rgba(124,92,255,.6);
-      transition: transform 0.25s ease;
-      user-select: none;
-    }
-
-    #enter-btn .glow {
-      position: absolute;
-      inset: -20px;
-      background: radial-gradient(circle, rgba(124,92,255,0.6) 0%, transparent 60%);
-      filter: blur(60px);
-      border-radius: 50%;
-      animation: pulse-glow 4s infinite ease-in-out;
-      z-index: 0;
-    }
-
-    @keyframes pulse-glow {
-      0% { transform: scale(1); opacity: 0.6; }
-      50% { transform: scale(1.3); opacity: 0.3; }
-      100% { transform: scale(1); opacity: 0.6; }
-    }
-
-    #enter-btn .text {
-      position: relative;
-      z-index: 2;
-    }
-
-    #enter-btn .shine {
-      position: absolute;
-      top: -30%;
-      left: -60%;
-      width: 160%;
-      height: 220%;
-      background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%);
-      transform: rotate(25deg) translateX(-100%);
-      pointer-events: none;
-      transition: all 0.8s ease;
-      filter: blur(4px);
-    }
-
-    #enter-btn:hover .shine {
-      transform: rotate(25deg) translateX(40%);
-    }
-
-    #enter-btn:active {
-      transform: scale(0.95);
-    }
-
-    /* Mute button styles */
-    #mute-btn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      background: var(--accent);
-      border: none;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      box-shadow: 0 20px 50px -10px rgba(124,92,255,.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 4000;
-      color: white;
-      font-size: 22px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-
-    #mute-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 25px 70px -10px rgba(124,92,255,.7);
-    }
-  </style>
+  <!-- SCRIPTS -->
+  <script src="script.js"></script>
 </body>
 </html>
