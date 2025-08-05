@@ -208,31 +208,31 @@
       margin-top: 14px;
     }
     .skill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(20px);
       background: rgba(255, 255, 255, 0.03);
       padding: 16px;
       border-radius: 12px;
       text-align: center;
-      font-weight: 600;
       position: relative;
       overflow: hidden;
       transition: transform var(--transition);
       user-select: none;
-      opacity: 0;
-      transform: translateY(20px);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    }
+    .skill img {
+      width: 40px;
+      height: 40px;
+      filter: invert(92%) sepia(14%) saturate(1227%) hue-rotate(243deg) brightness(90%) contrast(88%);
+      /* Adjust or remove this filter to get original icon colors */
     }
     .skill:hover {
       transform: scale(1.04);
-    }
-    .skill-icon {
-      width: 26px;
-      height: 26px;
-      filter: invert(85%) sepia(6%) saturate(0%) hue-rotate(161deg) brightness(110%) contrast(88%);
-      flex-shrink: 0;
     }
 
     /* Projects */
@@ -406,43 +406,43 @@
     <h2>Technical Skills</h2>
     <div class="skills-grid">
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/html5.svg" alt="HTML" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/html5.svg" alt="HTML" />
         HTML
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/css3.svg" alt="CSS" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/css3.svg" alt="CSS" />
         CSS
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/typescript.svg" alt="TypeScript" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/typescript.svg" alt="TypeScript" />
         TypeScript
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/javascript.svg" alt="JavaScript" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/javascript.svg" alt="JavaScript" />
         JavaScript
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/cplusplus.svg" alt="C++" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/cplusplus.svg" alt="C++" />
         C++
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/csharp.svg" alt="C#" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/csharp.svg" alt="C#" />
         C#
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/lua.svg" alt="Lua" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/lua.svg" alt="Lua" />
         Lua
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/vite.svg" alt="Vite" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/vite.svg" alt="Vite" />
         Vite
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/react.svg" alt="React" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/react.svg" alt="React" />
         React
       </div>
       <div class="skill">
-        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/python.svg" alt="Python" class="skill-icon" />
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/python.svg" alt="Python" />
         Python
       </div>
     </div>
@@ -507,23 +507,112 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
-    &copy; 2023 Developer Portfolio - All rights reserved.
+    <div>© <span id="year"></span> basilisezkid23, Developer. Code &amp; design by basilisezkid23. <a href="https://github.com/basilisezkid23" target="_blank">basilisezkid23, GitHost website</a>.</div>
   </footer>
 
-  <!-- AUDIOS -->
-  <audio id="intro-music" preload="auto">
-    <source src="https://raw.githubusercontent.com/basilisezkid23/basilisezkid23.github.io/main/Toodles%20theme%20for%20%40Toodles551.mp3" type="audio/mpeg" />
-    Your browser does not support the audio element.
-  </audio>
+  <script>
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-  <audio id="ambient-music" loop preload="auto">
-    <source src="https://raw.githubusercontent.com/basilisezkid23/basilisezkid23.github.io/main/sky-in-the-night-slow-ambient-music-minecraft-music-231465.mp3" type="audio/mpeg" />
-    Your browser does not support the audio element.
-  </audio>
+    // Typewriter animation logic
+    const typedText = document.querySelector('.typed');
+    const cursor = document.querySelector('.cursor');
+    const words = ['Developer', 'Programmer', 'Coder', 'Tech Enthusiast'];
+    let wordIndex = 0;
+    let letterIndex = 0;
+    let typing = true;
 
-  <!-- SCRIPTS -->
-  <script src="script.js"></script>
+    function type() {
+      if (typing) {
+        if (letterIndex < words[wordIndex].length) {
+          typedText.textContent += words[wordIndex][letterIndex];
+          letterIndex++;
+          setTimeout(type, 120);
+        } else {
+          typing = false;
+          setTimeout(type, 900);
+        }
+      } else {
+        if (letterIndex > 0) {
+          typedText.textContent = words[wordIndex].substring(0, letterIndex - 1);
+          letterIndex--;
+          setTimeout(type, 60);
+        } else {
+          typing = true;
+          wordIndex = (wordIndex + 1) % words.length;
+          setTimeout(type, 200);
+        }
+      }
+    }
+    type();
+
+    // Scroll fade-in animations with GSAP
+    gsap.registerPlugin(ScrollToPlugin);
+
+    window.addEventListener('load', () => {
+      // Animate skill items sequentially
+      gsap.to('.skill', {
+        opacity: 1,
+        y: 0,
+        stagger: 0.1,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#skills",
+          start: "top 80%"
+        }
+      });
+
+      // Animate projects
+      gsap.to('.project-card', {
+        opacity: 1,
+        y: 0,
+        stagger: 0.15,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#projects",
+          start: "top 80%"
+        }
+      });
+
+      // Animate CTA box
+      gsap.to('.cta-box', {
+        opacity: 1,
+        scale: 1,
+        duration: 0.7,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#contact",
+          start: "top 80%"
+        }
+      });
+    });
+
+    // Mute button functionality (dummy toggle)
+    const muteBtn = document.getElementById('mute-btn');
+    muteBtn.addEventListener('click', () => {
+      if (muteBtn.textContent === '🔊') {
+        muteBtn.textContent = '🔇';
+      } else {
+        muteBtn.textContent = '🔊';
+      }
+    });
+
+    // Entry overlay logic
+    const entryOverlay = document.getElementById('entry-overlay');
+    const enterBtn = document.getElementById('enter-btn');
+    enterBtn.addEventListener('click', () => {
+      gsap.to(entryOverlay, {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => {
+          entryOverlay.style.display = 'none';
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
