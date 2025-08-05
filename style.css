@@ -201,6 +201,34 @@ section {
   margin-top: 14px;
 }
 
+/* Skills flex for icon + text */
+.skill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: left;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  transition: transform 0.3s ease;
+}
+.skill:hover {
+  transform: scale(1.04);
+}
+
+/* Skill icon styling */
+.skill-icon {
+  width: 26px;
+  height: 26px;
+  filter: invert(87%) sepia(4%) saturate(11%) hue-rotate(175deg) brightness(95%) contrast(85%);
+  user-select: none;
+  pointer-events: none;
+}
+
 /* Initial state and animation for skills section and its children */
 .skills,
 .projects,
@@ -227,20 +255,6 @@ section {
 .project-card.visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-.skill {
-  background: rgba(255, 255, 255, 0.03);
-  padding: 16px;
-  border-radius: 12px;
-  text-align: center;
-  font-weight: 600;
-  position: relative;
-  overflow: hidden;
-  user-select: none;
-}
-.skill:hover {
-  transform: scale(1.04);
 }
 
 /* Projects */
